@@ -60,7 +60,7 @@ resource "aws_iam_role" "firehose_role" {
       "Principal": {
         "Service": "firehose.amazonaws.com"
       },
-      "Effect": "Allow",
+      "Effect": "Allow", 
       "Sid": ""
     }
   ]
