@@ -10,7 +10,7 @@ resource "aws_cloudwatch_log_group" "firehose_log_group" {
 }
 
 resource "aws_s3_bucket" "transformed_records" {
-  bucket = "apps-poc-transformed-${var.env}"
+  bucket = "apps-transformed-${var.stream_name}-${var.env}"
   acl    = "private"
 }
 
