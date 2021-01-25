@@ -53,7 +53,7 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
 
 
 resource "aws_iam_role" "firehose_role" {
-  name = "apps_poc_firehose_role_${var.env}"
+  name = "apps_poc_${var.stream_name}_${var.env}"
 
   assume_role_policy = <<EOF
 {
