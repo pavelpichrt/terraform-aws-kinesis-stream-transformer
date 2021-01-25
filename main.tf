@@ -1,5 +1,9 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_ssm_parameter" "apps_s3_transformed_records_bucket_arn" {
+  name = "apps_s3_transformed_records_bucket_arn_${var.env}"
+}
+
 resource "aws_cloudwatch_log_group" "firehose_log_group" {
   name              = "/aws/firehose/${var.stream_name}"
   retention_in_days = 60
@@ -20,7 +24,7 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
 
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose_role.arn
-    bucket_arn          = aws_s3_bucket.transformed_records.arn
+    bucket_arn          = aws_ssm_parameter.apps_s3_transformed_records_bucket_arn.value
     prefix              = "success/!{timestamp:yyyy/MM/dd}/"
     error_output_prefix = "failure/!{firehose:error-output-type}/!{timestamp:yyyy/MM/dd}/"
     buffer_size         = 1
@@ -100,8 +104,8 @@ resource "aws_iam_policy" "firehose_policy" {
                 "s3:PutObject"
             ],
             "Resource": [
-                "${aws_s3_bucket.transformed_records.arn}",
-                "${aws_s3_bucket.transformed_records.arn}/*"
+                "${aws_ssm_parameter.apps_s3_transformed_records_bucket_arn.value}",
+                "${aws_ssm_parameter.apps_s3_transformed_records_bucket_arn.value}/*"
             ]
         },
         {
