@@ -25,8 +25,8 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose_role.arn
     bucket_arn          = data.aws_ssm_parameter.apps_s3_transformed_records_bucket_arn.value
-    prefix              = "success/!{timestamp:yyyy/MM/dd}/"
-    error_output_prefix = "failure/!{firehose:error-output-type}/!{timestamp:yyyy/MM/dd}/"
+    prefix              = "${var.stream_name}/ok/"
+    error_output_prefix = "${var.stream_name}/error/!{firehose:error-output-type}/"
     buffer_size         = 1
     buffer_interval     = 60
 
