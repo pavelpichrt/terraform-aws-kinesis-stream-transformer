@@ -1,7 +1,5 @@
 variable "account_id" {}
 
-variable "env" {}
-
 variable "stream_name" {}
 
 variable "transform_lambda_arn" {}
